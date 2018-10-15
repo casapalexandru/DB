@@ -9,4 +9,15 @@ inner join studenti s on sr.Id_Student = s.Id_Student
 where s.Nume_Student = 'Cosovanu' and sr.Nota<5
 
 
-![interogarea 19](Image3.png)
+![interogarea 19](Image1.png)
+
+
+2. Interogarea Nr. 33
+
+select distinct Nume_Student, Prenume_Student
+from studenti_reusita sr
+inner join studenti s on sr.Id_Student = s.Id_Student
+where sr.Tip_Evaluare = 'Reusita curenta' and sr.Nota<5
+
+
+![interogarea 33](Image2.png)
