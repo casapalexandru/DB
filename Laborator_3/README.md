@@ -10,7 +10,7 @@ inner join studenti s on sr.Id_Student = s.Id_Student
 where s.Nume_Student = 'Cosovanu' and sr.Nota<5
 
 
-![interogarea 19](Image1.png)
+![interogarea 19](Image1.PNG)
 
 
 2. Interogarea Nr. 33
@@ -22,7 +22,7 @@ inner join studenti s on sr.Id_Student = s.Id_Student
 where sr.Tip_Evaluare = 'Reusita curenta' and sr.Nota<5
 
 
-![interogarea 33](Image2.png)
+![interogarea 33](Image2.PNG)
 
 
 
@@ -36,4 +36,4 @@ group by d.Disciplina
 having AVG(cast(sr.Nota as float)) > 7
 order by Media
 
-![interogarea 35](Image3.png)
+![interogarea 35](Image3.PNG)
