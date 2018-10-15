@@ -9,4 +9,4 @@ inner join studenti s on sr.Id_Student = s.Id_Student
 where s.Nume_Student = 'Cosovanu' and sr.Nota<5
 
 
-![interogarea 19](image3.1.png)
+![interogarea 19](Image3.1.png)
