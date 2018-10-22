@@ -234,6 +234,14 @@ from studenti_reusita sr
 inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
 where Disciplina like 'Baze de date' and Data_Evaluare between '2018-01-01' and '2019-12-31'
 
+/*Interogarea 32*/
+select s.Nume_Student,s.Prenume_Student,g.Cod_Grupa,avg(cast(Nota as float)) as Media
+from studenti_reusita sr
+inner join studenti s on sr.Id_Student = s.Id_Student
+inner join grupe g on sr.Id_Grupa = g.Id_Grupa
+group by s.Nume_Student,s.Prenume_Student,g.Cod_Grupa
+order by g.Cod_Grupa
+
 /*Interogarea 33*/
 select distinct Nume_Student, Prenume_Student
 from studenti_reusita sr
@@ -249,4 +257,14 @@ inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
 group by d.Disciplina
 having AVG(cast(sr.Nota as float)) > 7
 order by Media
+
+/*Interogarea 39*/
+select distinct d.Disciplina
+from studenti_reusita sr
+inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
+inner join studenti s on sr.Id_Student = s.Id_Student
+where sr.Tip_Evaluare like 'Examen'
+group by d.Disciplina
+having cast(count(case when sr.Nota < 5 then sr.Nota else NULL end) as float)/
+count (s.Nume_Student)<0.05
 ```
