@@ -205,13 +205,11 @@ inner join grupe g on sr.Id_Grupa = g.Id_Grupa
 group by g.Cod_Grupa
 having count( distinct sr.Id_Student) >=24
 
-/*Interogarea 26!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-select distinct Nume_Profesor,Prenume_Profesor,Adresa_Postala_Profesor,
-Nume_Student,Prenume_Student,Adresa_Postala_Student
-from studenti_reusita sr
-full join profesori p on sr.Id_Profesor = p.Id_Profesor
-full join studenti s on sr.Id_Student = s.Id_Student
-where Adresa_Postala_Student like '%31 August%' and Adresa_Postala_Student like '%31 August%'
+/*Interogarea 26*/
+ select  s.Nume_Student,s.Prenume_Student,s.Adresa_Postala_Student,x.Nume_Profesor,x.Prenume_Profesor,x.Adresa_Postala_Profesor
+from (Select * from profesori where Adresa_Postala_Profesor like '%31 August%') as x
+full outer join  (select * from studenti where Adresa_Postala_Student like '%31 August%') as s
+on s.Adresa_Postala_Student = x.Adresa_Postala_Profesor
 
 /*Interogarea 27*/
 select distinct s.Id_Student
@@ -222,17 +220,25 @@ where sr.Tip_Evaluare like 'Examen' and sr.Nota >4 and p.Prenume_Profesor = 'Ion
 
 /*Interogarea 28*/
 --------------------------
-/*INterogarea 29!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-select Id_Disciplina, min(Nota) as Minim
-from studenti_reusita
-where Id_Student=100 and Tip_Evaluare like 'Examen'
-group by Id_Disciplina
+/*INterogarea 29*/
+select distinct Nume_Student,Prenume_Student
+from studenti_reusita sr
+inner join studenti s on sr.Id_Student = s.Id_Student
+where Nota <all( select min(Nota) from studenti_reusita where Id_Student = 100 and Tip_Evaluare like 'Examen')
 
 /*Interogarea 30*/
 select count(distinct Id_Student) as Nr_Studenti
 from studenti_reusita sr
 inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
 where Disciplina like 'Baze de date' and Data_Evaluare between '2018-01-01' and '2019-12-31'
+
+/*Interogarea 31*/
+select Nume_Student, Prenume_Student,Id_Disciplina
+from studenti_reusita sr
+inner join studenti s on sr.Id_Student = s.Id_Student
+where sr.Nota <= 4
+group by Nume_Student,Prenume_Student,Id_Disciplina
+having count(sr.Id_Disciplina)>2
 
 /*Interogarea 32*/
 select s.Nume_Student,s.Prenume_Student,g.Cod_Grupa,avg(cast(Nota as float)) as Media
@@ -248,7 +254,12 @@ from studenti_reusita sr
 inner join studenti s on sr.Id_Student = s.Id_Student
 where sr.Tip_Evaluare = 'Reusita curenta' and sr.Nota<5
 
-
+/*Interogarea 34*/
+select distinct Nume_Student, Prenume_Student
+from studenti_reusita sr
+inner join studenti s on sr.Id_Student = s.Id_Student
+group by Nume_Student, Prenume_Student
+having avg(sr.Nota) <= 5
 
 /*Interogarea 35*/
 select d.Disciplina,AVG(cast(sr.Nota as float)) as Media
@@ -257,6 +268,30 @@ inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
 group by d.Disciplina
 having AVG(cast(sr.Nota as float)) > 7
 order by Media
+
+/*Interogarea 36*/
+------------------------
+
+/*Interogarea 37*/
+select top 1 Disciplina, avg(cast(sr.Nota as float)) as Nota_Medie
+from studenti_reusita sr
+inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
+where sr.Tip_Evaluare like 'Examen'
+group by Disciplina
+order by Nota_Medie desc
+
+/*Interogarea 38*/
+select Disciplina, avg(cast(sr.Nota as float)) as Nota_Medie
+from studenti_reusita sr
+inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
+group by Disciplina
+having avg(cast(sr.Nota as float)) >(
+select avg(cast(sr.Nota as float)) as Nota_Medie
+from studenti_reusita sr
+inner join discipline d on sr.Id_Disciplina = d.Id_Disciplina
+where d.Disciplina like 'Baze de date'
+group by Disciplina)
+order by Nota_Medie desc
 
 /*Interogarea 39*/
 select distinct d.Disciplina
