@@ -1,5 +1,5 @@
 # Laboratorul Nr.6
-# TRANSACT-SQL-INSTRUCTIUNI PROCEDURALE
+# CREAREA TABELELOR SI INDECSILOR
 
 TASK_01
 Sa se scrie o instructiune T-SQL, care ar popula coloana Adresa _ Postala _ Profesor din tabelul profesori cu valoarea 'Mun. Chisinau', unde adresa este necunoscuta:
