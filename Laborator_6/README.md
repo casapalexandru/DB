@@ -58,3 +58,15 @@ alter table grupe add constraint prof_stud unique(sef_grupa,prof_indrumator);
 ```
 
 ![interogarea 3](Image3.PNG)
+
+#TASK_04
+Sa se scrie o instructiune T-SQL, care ar mari toate notele de evaluare a sefilor de grupe cu un punct. Nota maximala (10) nu poate fi marita:
+```SQL
+update studenti_reusita
+set Nota = Nota + 1
+where Tip_Evaluare = 'Examen'
+      and Id_Student = any(select sef_grupa 
+	                       from grupe)
+	  and Nota != 10
+```
+![interogarea 4](Image4.PNG)
