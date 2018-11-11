@@ -163,3 +163,43 @@ select * from orarul
 ```
 
 ![interogarea 6](Image6.PNG)
+
+#TASK_7
+
+Sa se scrie expresiile T-SQL necesare pentru a popula tabelul orarul pentru grupa INF171 , ziua de luni. Datele necesare pentru inserare trebuie sa fie colectate cu ajutorul instructiunii/instructiunilor SELECT si introduse in tabelul-destinatie, stiind ca: 
+
+lectie #1 (Ora ='08:00', Disciplina = 'Structuri de date si algoritmi', Profesor ='Bivol Ion')
+
+lectie #2 (Ora ='11 :30', Disciplina = 'Programe aplicative', Profesor ='Mircea Sorin')
+
+lectie #3 (Ora ='13:00', Disciplina ='Baze de date', Profesor = 'Micu Elena')
+
+```SQL
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+values (
+	        (select Id_Disciplina from discipline where Disciplina = 'Structuri de date si algoritmi'),
+	        (select Id_Profesor from profesori where Nume_Profesor = 'Bivol' and Prenume_Profesor = 'Ion'),
+		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
+		    'Luni', 
+		    '08:00')
+
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+values (
+	        (select Id_Disciplina from discipline where Disciplina = 'Programe aplicative'),
+		    (select Id_Profesor from profesori where Nume_Profesor = 'Mircea' and Prenume_Profesor = 'Sorin'),
+		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
+		    'Luni', 
+		    '11:30')
+
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+values (
+	        (select Id_Disciplina from discipline where Disciplina = 'Baze de date'),
+		    (select Id_Profesor from profesori where Nume_Profesor = 'Micu' and Prenume_Profesor = 'Elena'),
+		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
+		    'Luni', 
+		    '13:00')
+
+		select * from orarul
+```
+
+![interogarea 7](Image7.PNG)
