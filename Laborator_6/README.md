@@ -203,3 +203,32 @@ values (
 ```
 
 ![interogarea 7](Image7.PNG)
+
+#TASK_8
+
+Sa se scrie interogarile de creare a indecsilor asupra tabelelor din baza de date universitatea pentru a asigura o performanta sporita la executarea interogarilor SELECT din Lucrarea practica 4. Rezultatele optimizarii sa fie analizate in baza planurilor de executie, pana la si dupa crearea indecsilor. Indecsii nou-creati sa fie plasati fizic in grupul de fisiere userdatafgroupl (Crearea si intrefinerea bazei de date - sectiunea 2.2.2)
+
+```SQL
+SELECT *
+INTO studenti_reusita_test
+FROM studenti_reusita			  
+
+create CLUSTERED INDEX [VX_Test]
+     ON studenti_reusita_test (Id_Disciplina, Id_Profesor, Id_Grupa)
+	
+UPDATE studenti_reusita_test
+set Nota = Nota + 1
+where Id_Student = ANY (select Sef_grupa from grupe)
+and Nota != 10
+
+select  Sef_grupa, Nota, Tip_Evaluare , Id_Disciplina
+from grupe	,	studenti_reusita_test
+where grupe.Id_Grupa = studenti_reusita_test.Id_Grupa
+```
+BEFORE
+
+![interogarea 8_1](Image8_1.PNG)
+
+AFTER
+
+![interogarea 8_2](Image8_2.PNG)
