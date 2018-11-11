@@ -73,9 +73,13 @@ where Tip_Evaluare = 'Examen'
 
 #TASK_4
 Sa se creeze un tabel profesori_new, care include urmatoarele coloane: Id_Profesor,Nume _ Profesor, Prenume _ Profesor, Localitate, Adresa _ 1, Adresa _ 2.
+
 #4_A: Coloana Id_Profesor trebuie sa fie definita drept cheie primara și, în baza ei, sa fie construit un index CLUSTERED.
+
 #4_B: Cîmpul Localitate trebuie sa posede proprietatea DEFAULT= 'mun. Chisinau'.
+
 #4_C: Să se insereze toate datele din tabelul profesori în tabelul profesori_new. Să se scrie, cu acest scop, un număr potrivit de instrucțiuni T-SQL.
+
 În coloana Localitate să fie inserata doar informatia despre denumirea localității din coloana-sursă Adresa_Postala_Profesor. În coloana Adresa_l, doar denumirea străzii. În coloana Adresa_2, să se păstreze numărul casei și (posibil) a apartamentului.
 
 ```SQL
@@ -126,3 +130,36 @@ select * from profesori_new
 ```
 
 ![interogarea 5](Image5.PNG)
+
+#TASK_6
+Să se insereze datele in tabelul orarul pentru Grupa= 'CIBJ 71' (Id_ Grupa= 1) pentru ziua de luni. Toate lectiile vor avea loc în blocul de studii 'B'. Mai jos, sunt prezentate detaliile de inserare:
+
+(ld_Disciplina = 107, Id_Profesor= 101, Ora ='08:00', Auditoriu = 202);
+
+(Id_Disciplina = 108, Id_Profesor= 101, Ora ='11:30', Auditoriu = 501);
+
+(ld_Disciplina = 119, Id_Profesor= 117, Ora ='13:00', Auditoriu = 501);
+
+```SQL
+create table orarul 
+( 
+	Id_Disciplina int,
+	Id_Profesor int,
+	Id_Grupa smallint default(1),
+	Zi char(2),
+	Ora Time,
+    Auditoriu int,
+	Bloc char(1) default('B'),
+	PRIMARY KEY (Id_Grupa, Zi, Ora, Auditoriu)
+					  )
+Insert orarul (Id_Disciplina , Id_Profesor, Zi, Ora, Auditoriu)
+       values ( 107, 101, 'Lu','08:00', 202 )
+Insert orarul (Id_Disciplina , Id_Profesor, Zi, Ora, Auditoriu)
+       values ( 108, 101, 'Lu','11:30', 501 )
+Insert orarul (Id_Disciplina , Id_Profesor, Zi, Ora, Auditoriu)
+       values ( 109, 117, 'Lu','13:00', 501 )
+
+select * from orarul
+```
+
+![interogarea 6](Image6.PNG)
