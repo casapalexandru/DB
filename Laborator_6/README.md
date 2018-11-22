@@ -71,7 +71,7 @@ where Tip_Evaluare = 'Examen'
 ```
 ![interogarea 4](Image4.PNG)
 
-#TASK_4
+#TASK_05
 Sa se creeze un tabel profesori_new, care include urmatoarele coloane: Id_Profesor,Nume _ Profesor, Prenume _ Profesor, Localitate, Adresa _ 1, Adresa _ 2.
 
 #4_A: Coloana Id_Profesor trebuie sa fie definita drept cheie primara și, în baza ei, sa fie construit un index CLUSTERED.
@@ -209,26 +209,52 @@ values (
 Sa se scrie interogarile de creare a indecsilor asupra tabelelor din baza de date universitatea pentru a asigura o performanta sporita la executarea interogarilor SELECT din Lucrarea practica 4. Rezultatele optimizarii sa fie analizate in baza planurilor de executie, pana la si dupa crearea indecsilor. Indecsii nou-creati sa fie plasati fizic in grupul de fisiere userdatafgroupl (Crearea si intrefinerea bazei de date - sectiunea 2.2.2)
 
 ```SQL
-SELECT *
-INTO studenti_reusita_test
-FROM studenti_reusita			  
+select *
+into studenti_reusita_test
+from studenti_reusita
 
-create CLUSTERED INDEX [VX_Test]
+create NONCLUSTERED INDEX [stud_re_te_idx]
      ON studenti_reusita_test (Id_Disciplina, Id_Profesor, Id_Grupa)
-	
-UPDATE studenti_reusita_test
-set Nota = Nota + 1
-where Id_Student = ANY (select Sef_grupa from grupe)
-and Nota != 10
 
-select  Sef_grupa, Nota, Tip_Evaluare , Id_Disciplina
-from grupe	,	studenti_reusita_test
-where grupe.Id_Grupa = studenti_reusita_test.Id_Grupa
+select * 
+into profesori_test
+from profesori
+
+create NONCLUSTERED INDEX [prof_idx]
+     ON profesori_test (Id_Profesor)
+
+select *
+into studenti_test
+from studenti
+
+create NONCLUSTERED INDEX [stud_idx]
+     ON studenti_test (Id_Student)
+
+CHECKPOINT;
+GO
+DBCC DROPCLEANBUFFERS;
+DBCC FREESYSTEMCACHE('ALL');
+GO
+SET STATISTICS TIME ON;
+SET STATISTICS IO ON;
+select distinct Nume_Profesor,Prenume_Profesor
+from studenti_reusita sr
+inner join profesori p on sr.Id_Profesor = p.Id_Profesor
+inner join studenti s on sr.Id_Student = s.Id_Student
+where s.Nume_Student = 'Cosovanu' and sr.Nota<5
+SET STATISTICS IO OFF;
+SET STATISTICS TIME ON;
+
+
 ```
 BEFORE
 
 ![interogarea 8_1](Image8_1.PNG)
 
+![interogarea 8_2](Image8_2.PNG)
+
 AFTER
 
-![interogarea 8_2](Image8_2.PNG)
+![interogarea 8_3](Image8_3.PNG)
+
+![interogarea 8_4](Image8_4.PNG)
