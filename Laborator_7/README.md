@@ -130,3 +130,42 @@ order by Media
 ```
 
 ![interogarea 7_2](Image7_2.PNG)
+
+#TASK_08
+
+Creați sinonimele respective pentru a simplifica interogările construite în exercițiul precedent și reformulați interogările, folosind sinonimele create.
+
+
+--19--
+```SQL
+CREATE SYNONYM stud_St FOR studenti.studenti
+CREATE SYNONYM reusita_St FOR studenti.studenti_reusita
+CREATE SYNONYM disc_St FOR plan_studii.discipline
+CREATE SYNONYM prof_St FOR cadre_didactice.profesori
+
+select distinct prof_St.Nume_Profesor,prof_St.Prenume_Profesor
+from reusita_St
+inner join prof_St on reusita_St.Id_Profesor = prof_St.Id_Profesor
+inner join stud_St on reusita_St.Id_Student = stud_St.Id_Student
+where stud_St.Nume_Student = 'Cosovanu' and reusita_St.Nota<5
+```
+
+--33--
+```SQL
+select distinct stud_St.Nume_Student, stud_St.Prenume_Student
+from reusita_St
+inner join stud_St on reusita_St.Id_Student = stud_St.Id_Student
+where reusita_St.Tip_Evaluare = 'Reusita curenta'
+group by stud_St.Nume_Student, stud_St.Prenume_Student
+having avg(cast(reusita_St.Nota as float))<5
+```
+
+--35--
+```SQL
+select disc_St.Disciplina,AVG(cast(reusita_St.Nota as float)) as Media
+from reusita_St
+inner join disc_St on reusita_St.Id_Disciplina = disc_St.Id_Disciplina
+group by disc_St.Disciplina
+having AVG(cast(reusita_St.Nota as float)) > 7
+order by Media
+```
