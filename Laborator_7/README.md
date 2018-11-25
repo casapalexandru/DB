@@ -18,6 +18,7 @@ Să se adauge constrîngeri referențiale (legate cu tabelele studenti și profe
 ![interogarea 2_3](Image2_3.PNG)
 
 #TASK_03
+
 La diagrama construită, să se adauge și tabelul orarul definit în capitolul 6 al acestei lucrari:tabelul orarul conține identificatorul disciplinei (ld_Disciplina), identificatorul profesorului(Id_Profesor) și blocul de studii (Bloc). Cheia tabelului este constituită din trei cîmpuri:identificatorul grupei (Id_ Grupa), ziua lectiei (Z1), ora de inceput a lectiei (Ora), sala unde are loc lectia (Auditoriu)
 
 ```SQL
@@ -39,29 +40,41 @@ Insert orarul (Id_Disciplina , Id_Profesor, Zi, Ora, Auditoriu)
 Insert orarul (Id_Disciplina , Id_Profesor, Zi, Ora, Auditoriu)
        values ( 109, 117, 'Luni','13:00', 501 )
 
-INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora,Auditoriu)
 values (
 	        (select Id_Disciplina from discipline where Disciplina = 'Structuri de date si algoritmi'),
 	        (select Id_Profesor from profesori where Nume_Profesor = 'Bivol' and Prenume_Profesor = 'Ion'),
 		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
 		    'Luni', 
-		    '08:00')
+		    '08:00',
+		    113)
 
-INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora,Auditoriu)
 values (
 	        (select Id_Disciplina from discipline where Disciplina = 'Programe aplicative'),
 		    (select Id_Profesor from profesori where Nume_Profesor = 'Mircea' and Prenume_Profesor = 'Sorin'),
 		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
 		    'Luni', 
-		    '11:30')
+		    '11:30',
+		    401)
 
-INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora)
+INSERT INTO orarul (Id_Disciplina, Id_Profesor, Id_Grupa, Zi, Ora,Auditoriu)
 values (
 	        (select Id_Disciplina from discipline where Disciplina = 'Baze de date'),
 		    (select Id_Profesor from profesori where Nume_Profesor = 'Micu' and Prenume_Profesor = 'Elena'),
 		    (select Id_Grupa from grupe where Cod_Grupa = 'INF171'), 
 		    'Luni', 
-		    '13:00')
+		    '13:00',
+		    805)
 ```
 
 ![interogarea 3](Image3.PNG)
+
+#TASK_04
+
+Tabelul orarul trebuie să conțină și 2 chei secundare: (Zi, Ora, Id_ Grupa, Id_ Profesor) și (Zi, Ora, ld_Grupa, ld_Disciplina).
+
+![interogarea 4_1](Image4_1.PNG)
+
+![interogarea 4_1](Image4_1.PNG)
+
