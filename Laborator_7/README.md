@@ -78,3 +78,8 @@ Tabelul orarul trebuie să conțină și 2 chei secundare: (Zi, Ora, Id_ Grupa, 
 
 ![interogarea 4_1](Image4_1.PNG)
 
+#TASK_05
+
+În diagrama, de asemenea, trebuie sa se defineasca constrangerile referentiale (FK-PK) ale atributelor ld_Disciplina, ld_Profesor, Id_ Grupa din tabelului orarul cu atributele tabelelor respective.
+
+![interogarea 5](Image5.PNG)
