@@ -89,3 +89,44 @@ Tabelul orarul trebuie să conțină și 2 chei secundare: (Zi, Ora, Id_ Grupa, 
 Creați, în baza de date universitatea, trei scheme noi: cadre_didactice, plan_studii și studenti. Transferați tabelul profesori din schema dbo in schema cadre didactice, ținînd cont de dependentele definite asupra tabelului menționat. În același mod să se trateze tabelele orarul,discipline care aparțin schemei plan_studii și tabelele studenți, studenti_reusita, care apartin schemei studenti. Se scrie instructiunile SQL respective.
 
 ![interogarea 6](Image6.PNG)
+
+#TASK_07
+
+Modificati 2-3 interogari asupra bazei de date universitatea prezentate in capitolul 4 astfel ca numele tabelelor accesate sa fie descrise in mod explicit, ținînd cont de faptul ca tabelele au fost mutate in scheme noi.
+
+Interogarea Nr. 19 Gasiti Numele si Prenumele profesorilor, care au predat discipline, in care studentul "Cosovanu" a fost respins (nota<5) la cel putin o proba.
+
+```SQL
+select distinct cadre_didactice.profesori.Nume_Profesor,cadre_didactice.profesori.Prenume_Profesor
+from studenti.studenti_reusita
+inner join cadre_didactice.profesori on studenti.studenti_reusita.Id_Profesor = cadre_didactice.profesori.Id_Profesor
+inner join studenti.studenti on studenti.studenti_reusita.Id_Student = studenti.studenti.Id_Student
+where studenti.studenti.Nume_Student = 'Cosovanu' and studenti.studenti_reusita.Nota<5
+```
+
+![interogarea 7](Image7.PNG)
+
+
+Interogarea Nr. 33 Gasiti Numele si Prenumele studentilor, care nu au luat nota de promovare la reusita curenta la nici o disciplina.
+
+```SQL
+select distinct studenti.studenti.Nume_Student, studenti.studenti.Prenume_Student
+from studenti.studenti_reusita
+inner join studenti.studenti on studenti.studenti_reusita.Id_Student = studenti.studenti.Id_Student
+where studenti.studenti_reusita.Tip_Evaluare = 'Reusita curenta'
+group by studenti.studenti.Nume_Student, studenti.studenti.Prenume_Student
+having avg(cast(studenti.studenti_reusita.Nota as float))<5
+```
+
+Interogarea Nr. 35 Gasiti denumirile disciplinelor si media notelor pe disciplina. Afisati numai disciplinele cu medii mai mari de 7.0.
+
+```SQL
+select plan_studii.discipline.Disciplina,AVG(cast(studenti.studenti_reusita.Nota as float)) as Media
+from studenti.studenti_reusita
+inner join plan_studii.discipline on studenti.studenti_reusita.Id_Disciplina = plan_studii.discipline.Id_Disciplina
+group by plan_studii.discipline.Disciplina
+having AVG(cast(studenti.studenti_reusita.Nota as float)) > 7
+order by Media
+```
+
+![interogarea 7_2](Image7_2.PNG)
