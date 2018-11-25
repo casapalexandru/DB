@@ -83,3 +83,9 @@ Tabelul orarul trebuie să conțină și 2 chei secundare: (Zi, Ora, Id_ Grupa, 
 În diagrama, de asemenea, trebuie sa se defineasca constrangerile referentiale (FK-PK) ale atributelor ld_Disciplina, ld_Profesor, Id_ Grupa din tabelului orarul cu atributele tabelelor respective.
 
 ![interogarea 5](Image5.PNG)
+
+#TASK_06
+
+Creați, în baza de date universitatea, trei scheme noi: cadre_didactice, plan_studii și studenti. Transferați tabelul profesori din schema dbo in schema cadre didactice, ținînd cont de dependentele definite asupra tabelului menționat. În același mod să se trateze tabelele orarul,discipline care aparțin schemei plan_studii și tabelele studenți, studenti_reusita, care apartin schemei studenti. Se scrie instructiunile SQL respective.
+
+![interogarea 6](Image6.PNG)
