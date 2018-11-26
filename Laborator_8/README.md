@@ -66,3 +66,24 @@ group by plan_studii.discipline.Disciplina
 having AVG(cast(studenti.studenti_reusita.Nota as float)) > 7
 WITH CHECK OPTION;
 ```
+
+#TASK_04
+
+Sa se scrie instructiunile de testare a proprietatilor noi definite.
+
+```SQL
+--*1
+ALTER TABLE studenti.studenti DROP COLUMN Nume_Student
+
+--*2
+INSERT INTO task01
+values ('Arja','Abdula')
+
+--*3
+ALTER TABLE plan_studii.discipline DROP COLUMN Disciplina
+
+---*4
+
+INSERT INTO task02
+values('Practica', 7)
+```
