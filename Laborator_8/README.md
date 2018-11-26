@@ -39,3 +39,30 @@ select * from task11
 ```
 
 ![interogarea 2_1](Image2_1.PNG) ![interogarea 2_2](Image2_2.PNG) ![interogarea 2_3](Image2_3.PNG)
+
+Functiile Insert, Update si Delete in viziune sunt posibile, numai daca noul tuplu satisface conditiile viziunii.
+
+#TASK_03
+
+Sa se scrie instructiunile SQL care ar modifica viziunile create (in exercitiul 1) in asa fel, incat sa nu fie posibila modificarea sau stergerea tabelelor pe care acestea sunt definite si viziunile sa nu accepte operatiuni DML, daca conditiile clauzei WHERE nu sunt satisfacute.
+
+*
+```SQL
+ALTER VIEW task01 WITH SCHEMABINDING AS
+select distinct studenti.Nume_Student, studenti.Prenume_Student
+from studenti.studenti_reusita
+inner join studenti.studenti on studenti.studenti_reusita.Id_Student = studenti.studenti.Id_Student
+where studenti.studenti_reusita.Tip_Evaluare = 'Reusita curenta'
+WITH CHECK OPTION;
+```
+
+*
+```SQL
+alter view task02 with schemabinding as
+select plan_studii.discipline.Disciplina, AVG(cast(studenti.studenti_reusita.Nota as float)) as Media
+from studenti.studenti_reusita
+inner join plan_studii.discipline on studenti.studenti_reusita.Id_Disciplina = plan_studii.discipline.Id_Disciplina
+group by plan_studii.discipline.Disciplina
+having AVG(cast(studenti.studenti_reusita.Nota as float)) > 7
+WITH CHECK OPTION;
+```
