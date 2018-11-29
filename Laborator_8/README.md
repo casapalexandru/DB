@@ -124,3 +124,44 @@ order by Media desc
 ```
 
 ![interogarea 3_2](Image3_2.PNG)
+
+#TASK_06
+
+* Se considera un graf orientat, si fie se doreste parcursa calea de la nodul id = 3 la nodul unde id = 0. Sa se faca reprezentarea grafului orientat in forma de expresie-tabel recursiv.
+```SQL
+                       [4]
+                        |
+                        v
+  [5] -> [0] <- [1] <- [2]
+                        ^
+                        |
+                       [3]
+```
+
+* Sa se observe instructiunea de dupa UNION ALL a membrului recursiv, precum si partea de pana la UNION ALL reprezentata de membrul-ancora.
+
+```SQl
+create table recurs (
+		Number int primary key,
+		D_Number int);
+
+insert into recurs 
+values
+(5,0), (4,2), (3,2), (1,0), (2,1), (0, null);
+
+select * from recurs
+
+;with recurs_cte AS (
+		select Number , D_Number from recurs
+		where Number = 3 and D_Number = 2
+		
+		union all
+		
+		select recurs.Number, recurs.D_Number from recurs
+		inner join recurs_cte
+		on recurs.Number = recurs_cte.D_Number	
+)
+SELECT * from recurs_cte
+```
+
+![interogarea 4](Image4.PNG)
