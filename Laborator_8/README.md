@@ -87,3 +87,40 @@ ALTER TABLE plan_studii.discipline DROP COLUMN Disciplina
 INSERT INTO task02
 values('Practica', 7)
 ```
+
+#TASK_05
+
+Sa se rescrie 2 interogari formulate in exercitiile din capitolul 4, in asa fel incat interogarile imbricate sa fie redate sub forma expresiilor CTE.
+
+```SQL
+WITH inter1_CTE (Id_Student) AS
+    (SELECT stud_St.Id_Student
+     FROM stud_St
+     WHERE Nume_Student = 'Lincar'
+     AND Prenume_Student = 'Alexandra' )
+
+SELECT distinct disc_St.Disciplina
+FROM disc_St, inter1_CTE, reusita_St
+WHERE reusita_St.Id_Student = inter1_CTE.Id_Student
+AND disc_St.Id_Disciplina = reusita_St.Id_Disciplina
+```
+
+![interogarea 3_1](Image3_1.PNG)
+
+```SQL
+
+with inter35_CTE (Id_Disciplina,Nota) as
+(select Id_Disciplina, AVG(cast(reusita_St.Nota as float)) as Media
+ from reusita_St
+ group by Id_Disciplina
+ having AVG(cast(reusita_St.Nota as float)) > 7 )
+
+select r.Id_Disciplina,Disciplina, AVG(cast(r.Nota as float)) as Media
+from reusita_St r, inter35_CTE i, disc_St d
+where r.Id_Disciplina = i.Id_Disciplina
+and i.Id_Disciplina = d.Id_Disciplina
+group by r.Id_Disciplina, d.Disciplina
+order by Media desc
+```
+
+![interogarea 3_2](Image3_2.PNG)
