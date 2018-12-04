@@ -92,3 +92,96 @@ exec proctask3 'Casap','Alexandru','1986-01-18','Mun. Chisinau, str. Studentilor
 ```
 
 ![interogarea 3](Image3.PNG)
+
+#TASK_03
+
+Fie ca un profesor se elibereaza din functie la mijlocul semestrului. Sa se creeze o procedura stocata care ar reatribui inregistrarile din tabelul studenti_reusita unui alt profesor. Parametri de intrare: numele si prenumele profesorului vechi, numele si prenumele profesorului nou, disciplina. in cazul in care datele inserate sunt incorecte sau incomplete, sa se afiseze un mesaj de avertizare.
+
+```SQL
+drop procedure if exists proctask4
+go
+create procedure proctask4
+@nume_prof_vechi VARCHAR(30),
+@prenume_prof_vechi VARCHAR(30),
+@nume_prof_nou VARCHAR(30),
+@prenume_prof_nou VARCHAR(30),
+@disciplina VARCHAR(20)
+
+as
+if(( select disc_St.Id_Disciplina 
+     FROM disc_St 
+	 WHERE Disciplina = @disciplina) IN (select distinct reusita_St.Id_Disciplina 
+	                                     from reusita_St 
+										 where Id_Profesor = (select prof_St.Id_Profesor 
+										                      from prof_St 
+															  WHERE Nume_Profesor = @nume_prof_vechi 
+							                                  AND Prenume_Profesor = @prenume_prof_vechi)))
+begin
+
+update reusita_St
+set Id_Profesor = (select Id_Profesor
+		           from prof_St
+		           where Nume_Profesor = @nume_prof_nou
+	               AND Prenume_Profesor = @prenume_prof_nou)
+
+where Id_Profesor = (select Id_profesor
+		             from prof_St
+     		         where Nume_Profesor = @nume_prof_vechi
+	                 AND Prenume_Profesor = @prenume_prof_vechi)
+end
+else
+begin
+  print 'Eroare!!! Verifica parametrii de intrare!!!'
+end
+
+
+exec proctask4 'Oleanu','Andrei','Maria','Varzari','Matematica discreta'
+```
+
+![interogarea 4_1](Image4_1.PNG)
+
+![interogarea 4_2](Image4_2.PNG)
+
+#TASK_05
+
+Sa se creeze o procedura stocata care ar forma o lista cu primii 3 cei mai buni studenti la o disciplina, si acestor studenti sa le fie marita nota la examenul final cu un punct (nota maximala posibila este 10). In calitate de parametru de intrare, va servi denumirea disciplinei. Procedura sa returneze urmatoarele campuri: Cod_Grupa, Nume_Prenume_Student, Disciplina, Nota_ Veche, Nota_Noua.
+
+```SQL
+drop procedure if exists proctask5
+go
+create procedure proctas5
+@disciplina VARCHAR(50)
+
+as
+declare @studenti_lista table (Id_Student int, Media float)
+insert into @studenti_lista
+	select top (3) reusita_St.Id_Student, AVG(cast (Nota as float)) as Media
+    from reusita_St, disc_St
+	where disc_St.Id_Disciplina = reusita_St.Id_Disciplina
+	AND Disciplina = @disciplina
+	group by reusita_St.Id_Student
+	order by Media desc;
+
+select cod_grupa, stud_St.Id_Student, CONCAT(nume_student, ' ', Prenume_Student) as Nume, Disciplina, nota AS Nota_Veche, iif(nota > 9, 10, nota + 1) AS Nota_Noua 
+    from reusita_St, disc_St, grupe, stud_St
+	where disc_St.id_disciplina = reusita_St.id_disciplina
+	AND grupe.Id_Grupa = reusita_St.Id_Grupa
+	AND  stud_St.Id_Student = reusita_St.Id_Student
+	AND stud_St.Id_Student in (select Id_Student from @studenti_lista)
+	AND Disciplina = @disciplina
+	AND Tip_Evaluare = 'Examen';
+declare @id_discipl smallint = (select Id_Disciplina  
+                                from disc_St
+                                where Disciplina = @disciplina);
+
+update reusita_St
+set reusita_St.Nota = (CASE WHEN nota >= 9 THEN 10 ELSE nota + 1 END)
+where Tip_Evaluare = 'Examen'
+AND Id_Disciplina = @id_discipl
+AND Id_Student in (select Id_Student from @studenti_lista)
+go
+
+execute proctas5 @disciplina = 'Sisteme de calcul'
+```
+
+![interogarea 5](Image5.PNG)
