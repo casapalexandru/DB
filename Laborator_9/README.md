@@ -185,3 +185,48 @@ execute proctas5 @disciplina = 'Sisteme de calcul'
 ```
 
 ![interogarea 5](Image5.PNG)
+
+#TASK_06
+
+Sa se creeze functii definite de utilizator in baza exercitiilor (2 exercitii) din capitolul 4. Parametrii de intrare trebuie sa corespunda criteriilor din clauzele WHERE ale exercitiilor respective.
+
+```SQL
+DROP FUNCTION IF EXISTS funct19
+GO
+CREATE FUNCTION funct19 (@nume_student  VARCHAR(10), @reusita SMALLINT)
+RETURNS TABLE
+AS
+RETURN
+(
+select distinct Nume_Profesor,Prenume_Profesor
+from reusita_St sr
+inner join prof_St p on sr.Id_Profesor = p.Id_Profesor
+inner join stud_St s on sr.Id_Student = s.Id_Student
+where s.Nume_Student = @nume_student 
+  and sr.Nota < @reusita
+)
+
+select * from dbo.funct19 ('Cosovanu',5)
+```
+
+![interogarea 6_1](Image6_1.PNG)
+
+```SQL
+DROP FUNCTION IF EXISTS funct11
+GO
+CREATE FUNCTION funct11 (@disciplina VARCHAR(10), @anul SMALLINT, @nota SMALLINT)
+RETURNS TABLE
+AS
+RETURN
+(
+select distinct Nume_Profesor, Prenume_Profesor
+from reusita_St sr
+inner join prof_St p on sr.Id_Profesor = p.Id_Profesor
+inner join disc_St d on sr.Id_Disciplina = d.Id_Disciplina
+where Disciplina = @disciplina and year(Data_Evaluare) = @anul and Nota <=@nota
+)
+
+SELECT * FROM DBO.funct11 ('Baze de date',2018,4)
+```
+
+![interogarea 6_2](Image6_2.PNG)
