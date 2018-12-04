@@ -230,3 +230,32 @@ SELECT * FROM DBO.funct11 ('Baze de date',2018,4)
 ```
 
 ![interogarea 6_2](Image6_2.PNG)
+
+#TASK_07
+
+Sa se scrie functia care ar calcula varsta studentului. Sa se defineasca urmatorul format al functiei: <nume_functie>(<Data_Nastere_Student>).
+
+```SQL
+drop function if exists functtask7
+go
+
+create function functtask7 (@data_nasterii date )
+  returns int
+  begin
+  declare @varsta int
+  select @varsta = (select (year(getdate()) - year(@data_nasterii) - case
+ 						when (month(@data_nasterii) > month(getdate())) 
+						or (month(@data_nasterii) = month(getdate()) 
+						and  day(@data_nasterii) > day(getdate()))
+						THEN  1
+						ELSE  0
+						END))
+ return @varsta
+ end
+ go
+
+ select dbo.functtask7 ('1986-01-18') as Varsta
+```
+
+![interogarea 7](Image7.PNG)
+
