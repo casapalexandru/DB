@@ -259,3 +259,25 @@ create function functtask7 (@data_nasterii date )
 
 ![interogarea 7](Image7.PNG)
 
+#TASK_08
+
+Sa se creeze o functie definita de utilizator, care ar returna datele referitoare la reusita unui student. Se defineste urmatorul format al functiei : < nume_functie > (<Nume_Prenume_Student>). Sa fie afisat tabelul cu urmatoarele campuri: Nume_Prenume_Student, Disticplina, Nota, Data_Evaluare.
+
+```SQL
+drop function if exists functtask8
+go
+
+create function functtask8 (@st_nume_prenume VARCHAR(50))
+returns table
+as
+return
+(SELECT concat(Nume_Student, ' ',Prenume_Student) as Student, Disciplina, Nota, Data_Evaluare
+ FROM stud_St, disc_St, reusita_St
+ WHERE stud_St.Id_Student = reusita_St.Id_Student
+ AND disc_St.Id_Disciplina = reusita_St.Id_Disciplina 
+ AND Nume_Student + ' ' + Prenume_Student = @st_nume_prenume )
+ go
+ select * from dbo.functtask8 ('Ene Mihai')
+```
+
+![interogarea 8](Image8.PNG)
