@@ -281,3 +281,49 @@ return
 ```
 
 ![interogarea 8](Image8.PNG)
+
+#TASK_09
+
+Se cere realizarea unei functii definite de utilizator, care ar gasi cel mai sarguincios sau cel mai slab student dintr-o grupa. Se defineste urmatorul format al functiei: <nume_functie> (<Cod_Grupa>, <is_good>). Parametrul <is_good> poate accepta valorile "sarguincios" sau "slab", respectiv. Functia sa returneze un tabel cu urmatoarele campuri Grupa, Nume_Prenume_Student, Nota Medie , is_good. Nota Medie sa fie cu precizie de 2 zecimale.
+
+```SQL
+drop function if exists functtask9
+GO
+
+create function functtask9 (@cod_grupa VARCHAR(10), @is_good VARCHAR(20))
+returns @Student Table (Cod_Grupa varchar(10), Student varchar (100), Media decimal(4,2), Reusita varchar(20))
+as
+begin
+if @is_good = 'sarguincios'
+begin
+insert into @Student
+   select top (1) Cod_Grupa, concat(Nume_Student,' ',Prenume_Student) as Student,
+		          CAST(AVG( Nota * 1.0) as decimal (4,2)) as Media, @is_good
+   from grupe,stud_St, reusita_St
+   where grupe.Id_Grupa = reusita_St.Id_Grupa
+   AND stud_St.Id_Student = reusita_St.Id_Student
+   AND Cod_Grupa = @cod_grupa
+   group by Cod_Grupa, Nume_Student, Prenume_Student
+   Order by Media desc
+ end
+ else
+ begin 
+ insert into @Student
+    select top (1) Cod_Grupa, concat(Nume_Student,' ',Prenume_Student) as Student,
+		 CAST(AVG( Nota * 1.0) as decimal (4,2)) as Media, @is_good
+    from grupe,stud_St, reusita_St
+    where grupe.Id_Grupa = reusita_St.Id_Grupa
+    AND stud_St.Id_Student = reusita_St.Id_Student
+    AND Cod_Grupa = @cod_grupa
+    group by Cod_Grupa, Nume_Student, Prenume_Student
+    order by Media 
+ 
+end
+
+
+ RETURN 
+ end
+```
+
+![interogarea 9_1](Image9_1.PNG)
+![interogarea 9_2](Image9_2.PNG)
