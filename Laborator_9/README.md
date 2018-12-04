@@ -45,3 +45,26 @@ exec proc_ex35
 ```
 
 ![interogarea 1_2](Image1_2.PNG)
+
+#TASK_02
+
+Sa se creeze o procedura stocata, care nu are niciun parametru de intrare si poseda un parametru de iesire. Parametrul de iesire trebuie sa returneze numarul de studenti, care nu au sustinut cel putin o forma de evaluare (nota mai mica de 5 sau valoare NULL).
+
+```SQL
+drop procedure if exists proctask2;
+GO
+
+create procedure proctask2
+   @students_number smallint = null output
+
+as 
+select @students_number =  count(distinct Id_student) 
+from reusita_St
+where Nota < 5 or Nota = NULL
+
+declare @students_number SMALLINT
+EXEC proctask2 @students_number OUTPUT
+PRINT 'Nr de studenti ce nu au sustinut cel putin o forma de evaluare = ' + cast(@students_number as VARCHAR(3))
+```
+
+![interogarea 2](Image2.PNG)
