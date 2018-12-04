@@ -68,3 +68,27 @@ PRINT 'Nr de studenti ce nu au sustinut cel putin o forma de evaluare = ' + cast
 ```
 
 ![interogarea 2](Image2.PNG)
+
+#TASK_03
+
+Sa se creeze o procedura stocata, care ar insera in baza de date informatii despre un student nou. In calitate de parametri de intrare sa serveasca datele personale ale studentului nou si Cod_Grupa. Sa se genereze toate intrarile-cheie necesare in tabelul studenti_reusita. Notele de evaluare sa fie inserate ca NULL.
+
+```SQL
+drop procedure if exists proctask3
+go
+create procedure proctask3
+@nume varchar(50),
+@prenume varchar(50),
+@data date,
+@adresa varchar(200),
+@cod_grupa char(6)
+as
+insert into stud_St
+values ((select max(Id_Student)from stud_St) +1, @nume, @prenume, @data, @adresa);
+insert into reusita_St
+values ((select max(Id_Student)from stud_St), 108, 101 , 
+         (select Id_Grupa from grupe where Cod_Grupa = @cod_grupa), 'Examen', NULL, '2018-11-25')
+exec proctask3 'Casap','Alexandru','1986-01-18','Mun. Chisinau, str. Studentilor','FAF171'
+```
+
+![interogarea 3](Image3.PNG)
