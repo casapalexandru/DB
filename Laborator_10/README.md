@@ -49,7 +49,7 @@ AS SET NOCOUNT ON
   select * from stud_St where Id_Student= (select max(Id_Student) from stud_St)
   select * from reusita_St where Id_Student = (select max(Id_Student) from stud_St)
 ```
-![interogarea 2](Image2.PNG)
+![interogarea 2_1](Image2_1.PNG)
 
 #TASK_03
 
