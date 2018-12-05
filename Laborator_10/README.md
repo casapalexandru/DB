@@ -25,6 +25,36 @@ GO
 UPDATE plan_studii.orarul SET Auditoriu=510 WHERE Auditoriu = 501
 ```
 
-![interogarea 1](Image1.PNG)
 
 
+#TASK_02
+
+Sa se creeze declansatorul, care ar asigura popularea corecta (consecutiva) a tabelelor studenti si studenti_reusita,si ar permite evitarea erorilor la nivelul cheilor externe.
+
+```SQL
+CREATE TRIGGER declans10_2 ON reusita_St
+INSTEAD OF INSERT
+AS SET NOCOUNT ON
+   
+  INSERT INTO reusita_St 
+  SELECT * FROM inserted
+  WHERE Id_Student in (SELECT Id_Student FROM stud_St)
+  GO
+
+  INSERT INTO reusita_St values ((select max(Id_Student) from stud_St), 103, 104, 1, 'Examen', null, null)
+
+ -- INSERT INTO stud_St values ((select max(Id_Student) from reusita_St)+2,'Artur', 'Croitoru', '1996-12-12', null)
+
+ -- delete from studentiS where Id_Student = (select max(Id_Student) from stud_St)
+  select * from stud_St where Id_Student= (select max(Id_Student) from stud_St)
+  select * from reusita_St where Id_Student = (select max(Id_Student) from stud_St)
+```
+![interogarea 2](Image2.PNG)
+
+#TASK_03
+
+ Sa se creeze un declansator, care ar interzice micsorarea notelor in tabelul studenti_reusita si modificarea valorilor campului Data_Evaluare, unde valorile acestui camp sunt nenule. Declansatorul trebuie sa se lanseze, numai daca sunt afectate datele studentilor din grupa, "CIB 171". Se va afisa un mesaj de avertizare in cazul tentativei de a incalca constrangerea.
+
+```SQL
+
+```
