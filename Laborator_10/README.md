@@ -56,5 +56,41 @@ AS SET NOCOUNT ON
  Sa se creeze un declansator, care ar interzice micsorarea notelor in tabelul studenti_reusita si modificarea valorilor campului Data_Evaluare, unde valorile acestui camp sunt nenule. Declansatorul trebuie sa se lanseze, numai daca sunt afectate datele studentilor din grupa, "CIB 171". Se va afisa un mesaj de avertizare in cazul tentativei de a incalca constrangerea.
 
 ```SQL
-
+IF OBJECT_ID('decltask6_3', 'TR') is not null
+   DROP TRIGGER decltask6_3
+   GO
+CREATE TRIGGER decltask6_3 ON studenti_reusita_test
+AFTER UPDATE
+AS
+SET NOCOUNT ON
+IF UPDATE (Nota)
+DECLARE @ID_GRUPA INT = (SELECT Id_Grupa  
+                         FROM grupe 
+						 WHERE Cod_Grupa = 'CIB171')
+DECLARE @count int = (SELECT count(*) 
+                      FROM deleted , inserted 
+			          where deleted.Id_Disciplina = inserted.Id_Disciplina 
+					  and deleted.Id_Grupa = inserted.Id_Grupa 
+			          and deleted.Id_Profesor = inserted.Id_Profesor 
+					  and deleted.Tip_Evaluare = inserted.Tip_Evaluare 
+			          and deleted.Id_Student = inserted.Id_Student
+			          and inserted.Nota < deleted.Nota 
+			          and inserted.Id_Grupa = @ID_GRUPA)	
+BEGIN
+IF (@count > 0 )
+PRINT ('Nu se perminte micsorarea notelor pentru grupa CIB 171')
+ROLLBACK TRANSACTION
+end
+IF UPDATE(Data_evaluare)
+		SET @count = (SELECT count(*) 
+		FROM deleted 
+		WHERE Data_Evaluare is not null and Id_Grupa = @ID_GRUPA)
+		IF @count > 0
+		BEGIN
+			PRINT ('Nu se permite modificarea campului Tip_Evaluare')
+			ROLLBACK TRANSACTION
+		END
+GO
 ```
+
+![interogarea 3](Image3.PNG)
