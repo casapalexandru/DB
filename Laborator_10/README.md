@@ -94,3 +94,44 @@ GO
 ```
 
 ![interogarea 3](Image3.PNG)
+
+#TASK_04
+
+Sa se creeze un declansator DDL care ar interzice modificarea coloanei ld_Disciplina in tabelele bazei de date universitatea cu afisarea mesajului respectiv.
+
+```SQL
+CREATE TRIGGER decltask_5 on database
+FOR Alter_Table
+AS 
+SET NOCOUNT ON
+DECLARE @nume_disciplina varchar(50)
+SELECT @nume_disciplina=EVENTDATA().value('(/EVENT_INSTANCE/AlterTableActionList/*/Columns/Name)[1]', 'nvarchar(100)') 
+IF @nume_disciplina='Disciplina'
+BEGIN 
+PRINT ('Nu poate fi modificata coloana Id_Disciplina')
+ROLLBACK;
+END
+
+ALTER TABLE plan_studii.discipline ALTER COLUMN Id_Disciplina varchar(100)
+```
+
+![interogarea 4_1](Image4_1.PNG)
+
+```SQL
+CREATE TRIGGER decl_ex10 on database
+FOR Alter_Table
+AS 
+SET NOCOUNT ON
+DECLARE @Cod_Grupa varchar(50)
+SELECT @Cod_Grupa=EVENTDATA().value('(/EVENT_INSTANCE/AlterTableActionList/*/Columns/Name)[1]', 'nvarchar(100)') 
+IF @Cod_Grupa='Cod_Grupa'
+BEGIN 
+PRINT ('Nu poate fi modificata coloana Cod_Grupa')
+ROLLBACK;
+END
+
+ALTER TABLE grupe ALTER COLUMN Cod_Grupa varchar(100)
+```
+
+![interogarea 4_2](Image4_2.PNG)
+
