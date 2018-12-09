@@ -166,3 +166,44 @@ alter table grupe add Nume varchar(49);
 ```
 
 ![interogarea 5](Image5.PNG)
+
+
+#TASK_06
+
+ Sa se creeze un declansator DDL care, la modificarea proprietatilor coloanei ld_Profesor dintr-un tabel, ar face schimbari asemanatoare in mod automat in restul tabelelor.
+
+```SQL
+CREATE TRIGGER decl6task6
+ON DATABASE
+FOR ALTER_TABLE
+AS
+SET NOCOUNT ON
+DECLARE @input varchar(500)
+DECLARE @id_profesor varchar (20)
+DECLARE @table varchar (50)
+DECLARE @new_input varchar(500)
+
+SELECT @id_profesor = EVENTDATA().value('(/EVENT_INSTANCE/AlterTableActionList/*/Columns/Name)[1]', 'nvarchar(max)')
+IF @id_profesor = 'Id_Profesor'
+BEGIN
+SELECT @input = EVENTDATA().value ('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]', 'nvarchar(max)')
+SELECT @table = EVENTDATA().value ('(/EVENT_INSTANCE/ObjectName)[1]','nvarchar(max)')
+
+SELECT @new_input = REPLACE(@id_profesor, @table, 'studenti_reusita1');
+EXECUTE (@new_input)
+
+
+SELECT @new_input = REPLACE(@id_profesor, @table, 'profesori');
+EXECUTE (@new_input)
+
+
+SELECT @new_input = REPLACE(@id_profesor, @table, 'orarul');
+EXECUTE (@new_input)
+
+PRINT 'Datele au fost modificate cu succes'
+END
+
+ALTER TABLE profesori ALTER COLUMN Id_Profesor SMALLINT
+```
+
+![interogarea 6](Image6.PNG)
