@@ -135,3 +135,34 @@ ALTER TABLE grupe ALTER COLUMN Cod_Grupa varchar(100)
 
 ![interogarea 4_2](Image4_2.PNG)
 
+#TASK_05
+
+Sa se creeze un declansator DDL care ar interzice modificarea schemei bazei de date in afara orelor de lucru.
+
+```SQL
+DROP TRIGGER IF EXISTS decla_time_t9
+GO
+CREATE TRIGGER decla_time_t9
+ON DATABASE
+FOR ALTER_TABLE
+AS
+SET NOCOUNT ON
+DECLARE @Currenttime TIME
+DECLARE @Startday TIME
+DECLARE @Endday TIME
+SELECT @Currenttime = CONVERT(Time, GETDATE())
+SELECT @Startday = '8:00:00'
+SELECT @Endday = '17:00:00'
+
+IF (@Currenttime < @Startday) OR (@Currenttime > @Endday)
+BEGIN	
+PRINT 'Baza de date poate fi modificata in orelor de lucru. Ora curenta: ' + cast(@Currenttime as VARCHAR(20))
+ROLLBACK
+END
+GO
+
+
+alter table grupe add Nume varchar(49);
+```
+
+![interogarea 5](Image5.PNG)
