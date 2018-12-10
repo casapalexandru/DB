@@ -37,3 +37,21 @@ GO
 ```
 
 ![interogarea 2](Image2.PNG)
+
+#TASK_03
+
+Sa se scrie instructiunea unui backup al jurnalului de tranzactii al bazei de date universitatea. 
+Fisierul copiei de rezerva sa se numeasca exercitiul3.bak
+
+```SQL
+
+GO
+EXEC sp_addumpdevice 'DISK', 'backup_Log', 'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Backup\exercitiul3.bak'
+GO 
+
+GO
+BACKUP LOG universitatea TO backup_Log
+GO
+```
+
+![interogarea 3](Image3.PNG)
